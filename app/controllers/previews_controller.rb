@@ -49,6 +49,6 @@ class PreviewsController < ApplicationController
     project_id = (params[:issue] && params[:issue][:project_id]) || params[:project_id]
     @project = Project.find(project_id)
   rescue ActiveRecord::RecordNotFound
-    render_404
+    @project = nil
   end
 end
