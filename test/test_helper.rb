@@ -65,6 +65,9 @@ class ActiveSupport::TestCase
   teardown do
     Setting.clear_cache
     puts "[#{self.class}##{name}] finished"
+    if failures.any?
+      pp Role.anonymous.permissions
+    end
   end
 
   def uploaded_test_file(name, mime)
