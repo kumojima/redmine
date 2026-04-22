@@ -64,6 +64,7 @@ class ActiveSupport::TestCase
   # Clear Settings cache after each test to prevent test interference
   teardown do
     Setting.clear_cache
+    puts "[#{self.class}##{name}] finished"
   end
 
   def uploaded_test_file(name, mime)
