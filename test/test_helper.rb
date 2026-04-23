@@ -66,7 +66,13 @@ class ActiveSupport::TestCase
     Setting.clear_cache
     puts "[#{self.class}##{name}] finished"
     if failures.any? { |f| !f.is_a?(Minitest::Skip) }
+      pp "User.current:"
+      pp User.current
+      pp "Role.anonymous.permissions"
       pp Role.anonymous.permissions
+      pp "Project(1) enabled_modules"
+      pp Project.find(1).enabled_modules
+      pp `grep "Issue Eager Load" #{Rails.root}/log/test.log | tail -1`
     end
   end
 
