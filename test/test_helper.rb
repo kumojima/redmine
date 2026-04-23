@@ -90,7 +90,7 @@ class ActiveSupport::TestCase
   teardown do
     Setting.clear_cache
     puts "[#{self.class}##{name}] finished"
-    if failures.any?
+    if failures.any? { |f| !f.is_a?(Minitest::Skip) }
       pp Role.anonymous.permissions
     end
   end
