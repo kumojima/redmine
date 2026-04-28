@@ -93,7 +93,21 @@ class ActiveSupport::TestCase
       pp "Project(1) enabled_modules"
       pp Project.find(1).enabled_modules
       pp `grep "Issue Eager Load" #{Rails.root}/log/test.log | tail -1`
+      dump_db_internal(name)
     end
+  end
+
+  def dump_db_internal(name)
+    conn = ActiveRecord::Base.connection
+    data = {}
+    conn.tables.each do |table|
+      rows = conn.exec_query("SELECT * FROM #{table}")
+      data[table] = rows.to_a
+    end
+    dir = Rails.root.join("tmp", "dumps")
+    FileUtils.mkdir_p(dir)
+    file = dir.join("#{name}.json")
+    File.write(file, JSON.pretty_generate(data))
   end
 
   def uploaded_test_file(name, mime)

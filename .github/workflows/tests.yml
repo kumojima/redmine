@@ -56,6 +56,14 @@ jobs:
         run: |
           bin/rails test
 
+      - name: Upload dump
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: upload dump
+          path: tmp/dumps
+          if-no-files-found: ignore
+
       - name: Run bazaar non ascii test
         env:
           LANG: en_US.ISO8859-1
