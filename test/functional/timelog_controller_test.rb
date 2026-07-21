@@ -1141,6 +1141,7 @@ class TimelogControllerTest < Redmine::ControllerTest
   end
 
   def test_index_should_sort_by_spent_on_and_created_on
+    pp User.current
     t1 =
       TimeEntry.create!(
         :author => User.find(1), :user => User.find(1),

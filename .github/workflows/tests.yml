@@ -54,7 +54,7 @@ jobs:
 
       - name: Run tests
         run: |
-          bin/rails test
+          bin/rails test --seed 63309
 
       - name: Run bazaar non ascii test
         env:
