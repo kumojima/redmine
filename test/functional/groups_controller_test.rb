@@ -180,7 +180,7 @@ class GroupsControllerTest < Redmine::ControllerTest
         }
       }
     )
-    assert_redirected_to '/groups'
+    assert_redirected_to '/groups/10/edit'
     group = Group.find(10)
     assert_equal new_name, group.name
   end
