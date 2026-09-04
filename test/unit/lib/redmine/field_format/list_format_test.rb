@@ -81,6 +81,27 @@ class Redmine::ListFieldFormatTest < ActionView::TestCase
     end
   end
 
+  def test_edit_tag_should_select_defalut_value_without_custom_value_when_required
+    field = IssueCustomField.new(:field_format => 'list', :possible_values => ['Foo', 'Bar'], :is_required => true, :default_value => 'Bar')
+    value = CustomFieldValue.new(:custom_field => field, :customized => Issue.new, :value => nil)
+
+    tag = field.format.edit_tag(self, 'id', 'name', value)
+    assert_select_in tag, 'select' do
+      assert_select 'option[selected=selected]', 1
+      assert_select 'option[value=Bar][selected=selected]', :text => 'Bar'
+    end
+  end
+
+  def test_edit_tag_should_select_defalut_value_without_custom_value_when_not_required
+    field = IssueCustomField.new(:field_format => 'list', :possible_values => ['Foo', 'Bar'], :is_required => false, :default_value => 'Bar')
+    value = CustomFieldValue.new(:custom_field => field, :customized => Issue.new, :value => nil)
+
+    tag = field.format.edit_tag(self, 'id', 'name', value)
+    assert_select_in tag, 'select' do
+      assert_select 'option[selected=selected]', 0
+    end
+  end
+
   def test_edit_tag_with_multiple_should_select_current_values
     field = IssueCustomField.new(:field_format => 'list', :possible_values => ['Foo', 'Bar', 'Baz'], :is_required => false,
       :multiple => true)

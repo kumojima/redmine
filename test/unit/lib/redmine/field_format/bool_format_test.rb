@@ -62,4 +62,25 @@ class Redmine::BoolFieldFormatTest < ActionView::TestCase
     tag = field.format.edit_tag(self, 'abc', 'xyz', value)
     assert_select_in tag, 'select[name=xyz]', 1
   end
+
+  def test_edit_tag_should_select_defalut_value_without_custom_value_when_required
+    field = IssueCustomField.new(:field_format => 'bool', :is_required => true, :default_value => '0')
+    value = CustomFieldValue.new(:custom_field => field, :customized => Issue.new, :value => nil)
+
+    tag = field.format.edit_tag(self, 'id', 'name', value)
+    assert_select_in tag, 'select' do
+      assert_select 'option[selected=selected]', 1
+      assert_select 'option[value=0][selected=selected]', :text => 'No'
+    end
+  end
+
+  def test_edit_tag_should_select_defalut_value_without_custom_value_when_not_required
+    field = IssueCustomField.new(:field_format => 'bool', :is_required => false, :default_value => '0')
+    value = CustomFieldValue.new(:custom_field => field, :customized => Issue.new, :value => nil)
+
+    tag = field.format.edit_tag(self, 'id', 'name', value)
+    assert_select_in tag, 'select' do
+      assert_select 'option[selected=selected]', 0
+    end
+  end
 end

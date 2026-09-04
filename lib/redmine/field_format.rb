@@ -652,9 +652,15 @@ module Redmine
             blank_option = view.content_tag('option', '&nbsp;'.html_safe, :value => '')
           end
         end
+        cf = custom_value.custom_field
+        if !cf.multiple? && cf.is_required? && cf.default_value.present? && custom_value.value.blank?
+          value = cf.default_value
+        else
+          value = custom_value.value
+        end
         options_tags =
           blank_option +
-           view.options_for_select(possible_custom_value_options(custom_value), custom_value.value)
+           view.options_for_select(possible_custom_value_options(custom_value), value)
         s =
           view.select_tag(
             tag_name, options_tags,
